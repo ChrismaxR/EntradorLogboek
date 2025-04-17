@@ -5,6 +5,6 @@ library(duckdb)
 #googlesheets4::gs4_auth()
 
 logboek <- read_sheet(
-  "https://docs.google.com/spreadsheets/d/1nI4tfISEZRjN999LiIkopPa48OYJQoAE5w1x44PnPUc/edit?resourcekey=&gid=366955100#gid=366955100"
+  "https://docs.google.com/spreadsheets/d/1O1CbLbCjwRY0UyhB2xkfvPQ22SbQ_JaqG2kW0Lhv70A/edit?resourcekey=&gid=1332128650#gid=1332128650"
 ) |>
   janitor::clean_names()
