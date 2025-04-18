@@ -88,4 +88,4 @@ Bevindingen:
 ## Data model idee: 
 Initiële idee: https://chatgpt.com/share/67fccf86-b568-8004-9e05-e376bff929d5
 
-![DataModel](project/EntradorLogboek%20DataModel.png)
+![](project/EntradorLogboek%20DataModel.png)
