@@ -20,14 +20,14 @@ Het fungeert als een logboek, reflectietool, en communicatiemiddel in één.
 
 ## Functionele eisen
 
-- **Dagelijkse registratie van taken**: inclusief geplande To Dos en behaalde resultaten
-- **Dagelijkse check-in reminder**: automatische trigger (bijv. via e-mail)
+- **Dagelijkse registratie van taken**: inclusief geplande To Dos en behaalde resultaten. 
+- **Dagelijkse check-in reminder**: automatische trigger (bijv. via e-mail), maar wel alleen op de dagen dat ik werk.
 - **Lage frictie**: snelle, intuïtieve invoer vereist
 - **Verschillende invoervelden**: vrije tekst, numerieke waarden, ordinale waarden
 - **Koppeling met documentatie**: eenvoudig linken aan rapportages, user stories, charts, enz.
 - **Dashboarding en rapportage**: visualisatie en analyse van verzamelde data (vorm nog nader te bepalen)
 
-## Visualisatie-ideeën
+## Visualisatieideeën
 
 - Dashboard met kwantitatieve metrics:
   - Aantal geschreven user stories
@@ -60,24 +60,32 @@ Het fungeert als een logboek, reflectietool, en communicatiemiddel in één.
 4. Routinematige koppeling met documentatie en outputs
 5. Taalanalyse en verdiepende rapportages verkennen
 
-## ChatGPT Chat
-
-https://chatgpt.com/share/67f7dca7-8198-8004-bcdc-b892f52cdb22
+Sparren met ChatGPT: https://chatgpt.com/share/67f7dca7-8198-8004-bcdc-b892f52cdb22
 
 ## MVP - werkende dagelijkse check-in
 
 # Data verzamelen
-Google forms - formulier: https://forms.gle/UoRm5FryiPb2Nuga6
-Google Sheets file: https://docs.google.com/spreadsheets/d/1nI4tfISEZRjN999LiIkopPa48OYJQoAE5w1x44PnPUc/edit?resourcekey=&gid=366955100#gid=366955100
-Google Apps script: https://script.google.com/u/1/home/projects/10nIEo-qq_uN3maOzhGHu1xdNaayj8RzaBh5VWO_f-raFrQEzxcRsUbdh/edit
+- Google forms - formulier: https://forms.gle/UoRm5FryiPb2Nuga6
+- Google Sheets file: https://docs.google.com/spreadsheets/d/1nI4tfISEZRjN999LiIkopPa48OYJQoAE5w1x44PnPUc/edit?resourcekey=&gid=366955100#gid=366955100
+- Google Apps script: https://script.google.com/u/1/home/projects/10nIEo-qq_uN3maOzhGHu1xdNaayj8RzaBh5VWO_f-raFrQEzxcRsUbdh/edit
 
-# Data verzamelen
+De wijze waarop data verzamelt wordt kan samengevat worden met de volgende _Activity Diagram_:
+
+![](project/Activity%20Diagram%20EntradorLogboek.png)
+
+Het invullen van de google Form is als volgt te begrijpen:
+![](project/Proces%20Flow%20Google%20Forms.png)
+
 
 Bevindingen:
-1. Verhelder doel van het logboek: iedere ochtend opschrijven wat ik wil doen. Niet vragen wat ik die dag heb gedaan (wat weet ik nog niet)
-2. Nog een beetje een onnatuurlijke vibe bij het beschrijven van elke To do, kan dit makkelijker?
+
+1. ~~Verhelder doel van het logboek: iedere ochtend opschrijven wat ik wil doen. Niet vragen wat ik die dag heb gedaan (want weet ik nog niet)~~
+
+2. ~~Nog een beetje een onnatuurlijke vibe bij het beschrijven van elke To do, kan dit makkelijker?~~
+
 3. Neem in de To do vragen ook de verwijzing naar materialen mee. 
 
-## Data model idee: https://chatgpt.com/share/67fccf86-b568-8004-9e05-e376bff929d5
+## Data model idee: 
+Initiële idee: https://chatgpt.com/share/67fccf86-b568-8004-9e05-e376bff929d5
 
-
+![DataModel](project/EntradorLogboek%20DataModel.png)
