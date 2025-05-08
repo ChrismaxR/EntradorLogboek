@@ -77,7 +77,7 @@ Het invullen van de google Form is als volgt te begrijpen:
 ![](project/Proces%20Flow%20Google%20Forms.png)
 
 
-Bevindingen:
+# Bevindingen:
 
 1. ~~Verhelder doel van het logboek: iedere ochtend opschrijven wat ik wil doen. Niet vragen wat ik die dag heb gedaan (want weet ik nog niet)~~
 
@@ -85,7 +85,15 @@ Bevindingen:
 
 3. Neem in de To do vragen ook de verwijzing naar materialen mee. 
 
-## Data model idee: 
+4. Dat een item terugkomt na een refinement, omdat het daar niet goed is bevonden, wil ik ook kunnen bijhouden. Hoe bouw ik dit in de Google form het data model?
+
+# Data model idee: 
 Initiële idee: https://chatgpt.com/share/67fccf86-b568-8004-9e05-e376bff929d5
 
 ![](project/EntradorLogboek%20DataModel.png)
+
+# Doorontwikkeling
+
+In github heb ik een Project aangemaakt met een kanban board om mijn doorontwikkeling te managen:
+
+Zie: https://github.com/users/ChrismaxR/projects/2/views/1?layout=board
