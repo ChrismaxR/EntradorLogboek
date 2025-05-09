@@ -62,31 +62,12 @@ todo <- bind_rows(
   transmute(
     todoId = row_number(), # Unieke ID per todo-item
     entryId,
-    devOpsId = todoDevOps,
+    devOpsId = as.character(todoDevOps),
     titel = todoTitel,
     type = todoType,
     volgorde = todoVolgorde,
     omschrijving = todoOmschrijving
   )
-
-## themas splitten en long
-themasVanVandaagLong <- entry |> 
-  select(1, 2, themasVanVandaag) |> 
-  mutate(
-    themasVanVandaag = str_split(string = themasVanVandaag, pattern = ", ")
-  ) |> 
-  unnest_longer(themasVanVandaag) |> 
-  View()
-
-## tools splitten en long
-toolsVanDeDagLong <- entry |> 
-  select(1, 2, toolsVanDeDag) |> 
-  mutate(
-    toolsVanDeDag = str_split(string = toolsVanDeDag, pattern = ", ")
-  ) |> 
-  unnest_longer(toolsVanDeDag) |> 
-  View()
-
 
 # Selectie van algemene dagkenmerken per logboekentry
 entry <- logboek_wrangle |> 
@@ -104,7 +85,8 @@ entry <- logboek_wrangle |>
     welbevindenVandaag,
     welbevindenVandaagBucket,
     themasVanVandaag,
-    toolsVanDeDag
+    toolsVanDeDag, 
+    ikWerkteOpDezeLocatie
   ) |> 
   left_join(
     y = todo |> 
@@ -113,6 +95,22 @@ entry <- logboek_wrangle |>
         todoCount = n()
       ), by = "entryId" 
   )
+
+## themas splitten en long
+themasVanVandaagLong <- entry |> 
+  select(1, 2, themasVanVandaag) |> 
+  mutate(
+    themasVanVandaag = str_split(string = themasVanVandaag, pattern = ", ")
+  ) |> 
+  unnest_longer(themasVanVandaag)
+
+## tools splitten en long
+toolsVanDeDagLong <- entry |> 
+  select(1, 2, toolsVanDeDag) |> 
+  mutate(
+    toolsVanDeDag = str_split(string = toolsVanDeDag, pattern = ", ")
+  ) |> 
+  unnest_longer(toolsVanDeDag)
 
 # DevOpsId tracker - doorlooptijden van DevOps PBI's meten
 
