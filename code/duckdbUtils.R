@@ -90,17 +90,16 @@ dbExecute(
   )"
 )
 
-# source_data_meta
+# meta_data:
 dbExecute(
   con,
-  "CREATE TABLE source_data_meta (
-    update_date_time  DATETIME,
-    path  TEXT,
-    birth_date_time DATETIME,
-    acces_date_time DATETIME,
-    change_date_time DATETIME
+  "CREATE TABLE metaData (
+    object  TEXT,
+    cols  INTEGER,
+    rows  INTEGER,
+    updateDate DATE
   )"
 )
 
 # Remove tables
-# duckdb::dbRemoveTable(con, "wrangle_data_meta")
+# duckdb::dbRemoveTable(con, "meta_data")

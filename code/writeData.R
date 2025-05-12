@@ -20,26 +20,21 @@ con <- dbConnect(
 
 # Meta data tabel voor laatste update date bij te houden
 ## tabel maken om naar de database te sturen om brondata kwaliteit in de gaten te houden
-source_data_meta <- map_df(
-  .x = fs::dir_ls(here::here("data"), regex = "_Uren.csv$|financial.csv$"),
-  .f = fs::file_info
-) |>
-  transmute(
-    update_date_time = insert_time,
-    path = as.character(path),
-    birth_date_time = birth_time,
-    acces_date_time = access_time,
-    change_date_time = change_time
-  )
 
-# tabel voor checken van meta gegevens van wrangled data
-wrangle_data_meta <- tibble::tibble(
-  update_date_time = insert_time,
-  fin_long_rows = nrow(fin_long),
-  fin_long_cols = ncol(fin_long),
-  fin_wide_rows = nrow(fin_wide),
-  fin_wide_cols = ncol(fin_wide)
-)
+objects <- mget(ls())
+
+metaData <- imap_dfr(
+  .x = mget(ls()), 
+  .f = \(x, y) {
+    tibble(
+      object = y,
+      cols = if (is.data.frame(x) || is.matrix(x)) ncol(x) else NA, 
+      rows = if (is.data.frame(x) || is.matrix(x)) nrow(x) else NA,
+      updateDate = Sys.Date()
+    )
+  }
+) |> 
+  na.omit()
 
 # Data schrijven naar DuckDB --------------------
 # • Overschrijft bestaande tabellen volledig (overwrite = TRUE)
@@ -50,6 +45,7 @@ dbWriteTable(con, "themasVanVandaagLong", themasVanVandaagLong, append = F, over
 dbWriteTable(con, "toolsVanDeDagLong", toolsVanDeDagLong, append = F, overwrite = T)
 dbWriteTable(con, "devOpsTracker", devOpsTracker, append = F, overwrite = T)
 dbWriteTable(con, "locatieData", locatieData, append = F, overwrite = T)
+dbWriteTable(con, "metaData", metaData, append = F, overwrite = T)
 
 
 # Data controleren --------------------------
@@ -61,6 +57,7 @@ dbReadTable(conn = con, "themasVanVandaagLong")
 dbReadTable(conn = con, "toolsVanDeDagLong")
 dbReadTable(conn = con, "devOpsTracker")
 dbReadTable(conn = con, "locatieData")
+dbReadTable(conn = con, "metaData")
 
 # Databaseconnectie sluiten -------------------
 # • Sluit de verbinding met DuckDB na afronding werkzaamheden
