@@ -136,3 +136,5 @@ devOpsTracker <- logboek_wrangle |>
   mutate(
     duratie = maxDatum - minDatum
   )
+
+
