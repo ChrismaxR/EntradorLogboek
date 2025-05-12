@@ -18,10 +18,9 @@ title: Mijn todo's van vandaag
 
 ```sql last_todo
 select concat(titel, ' - ', type, ' - ', devOpsId) as header,
-  omschrijving
+       omschrijving
   from needful_things.todo
-
-  where entryId = (select max(entryId) from todo)
+ where entryId = (select max(entryId) from todo)
 ```
 
 ```sql updateDate

@@ -3,6 +3,7 @@
 # • Activeert DuckDB library (duckdb)
 
 source(here::here("code", "wrangleData.R"))
+source(here::here("code", "locatieData.R"))
 library(duckdb)
 insert_time <- Sys.time() # tijd van het runnen van het script
 
