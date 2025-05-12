@@ -1,13 +1,17 @@
 ---
-title: Mijn todo's van <Value data={updateDate} column=maxUpdateDate/>
+title: Mijn todo's van vandaag
 ---
 
+<Value data={updateDate} column=maxUpdateDate/>
 
 {#each last_todo as todo_loop}
 
-## {todo_loop.header}
+<Details title={todo_loop.header} open=TRUE>
 
 <Value data={todo_loop} column=omschrijving/>
+
+</Details>
+
 
 {/each}
 
