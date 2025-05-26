@@ -1,131 +1,31 @@
 ---
-title: 
+title: Mijn todo's van vandaag
 ---
 
-<CalendarHeatmap 
-    data={entry}
-    date=datum
-    value=welbevindenVandaag
-    title="Welbevinden"
-    subtitle="Dagelijks persoonlijk cijfer (schaal 1-10)" 
-    colorScale={[
-        ['rgb(254,234,159)', 'rgb(254,234,159)'],
-        ['rgb(218,66,41)', 'rgb(218,66,41)']
-    ]}
-/>
+<Value data={updateDate} column=maxUpdateDate/>
 
-<Grid cols=2>
-  <ECharts config={
-      {
-        title: {
-          text: 'Thema van de dag',
-          left: 'center'
-        },
-          tooltip: {
-              formatter: '{b}: {c}'
-          },
-        series: [
-          {
-            type: 'treemap',
-            visibleMin: 4,
-            label: {
-              show: true,
-              formatter: '{b}'
-            },
-            itemStyle: {
-              borderColor: '#fff'
-            },
-            roam: false,
-            nodeClick: false,
-            data: [...themas],
-            breadcrumb: {
-              show: false
-            }
-          }
-        ]
-      }
-    }
-  />
+{#each last_todo as todo_loop}
 
-  <ECharts config={
-      {
-        title: {
-          text: 'Tools gebruikt',
-          left: 'center'
-        },
-          tooltip: {
-              formatter: '{b}: {c}'
-          },
-        series: [
-          {
-            type: 'treemap',
-            visibleMin: 4,
-            label: {
-              show: true,
-              formatter: '{b}'
-            },
-            itemStyle: {
-              borderColor: '#fff'
-            },
-            roam: false,
-            nodeClick: false,
-            data: [...tools],
-            breadcrumb: {
-              show: false
-            }
-          }
-        ]
-        }
-      }
-  />
-</Grid>
+<Details title={todo_loop.header} open=TRUE>
 
-<BubbleMap 
-    data={locatie} 
-    lat=long 
-    long=lat
-    size=dagenOpLocatie 
-    value=dagenOpLocatie 
-    pointName=locatie 
-/>
+<Value data={todo_loop} column=omschrijving/>
 
-```sql entry
-  select
-      *
-  from needful_things.entry
+</Details>
+
+
+{/each}
+
+
+
+
+```sql last_todo
+select concat(titel, ' - ', type, ' - ', devOpsId) as header,
+       omschrijving
+  from needful_things.todo
+ where entryId = (select max(entryId) from todo)
 ```
 
-```sql tools
-select toolsVanDeDag as name, 
-  count(*) as value
-  
-  from needful_things.toolsVanDeDagLong
-
-group by toolsVanDeDag
-order by count(*) desc
-```
-
-```sql themas
-select themasVanVandaag as name, 
-  count(*) as value
-  
-  from needful_things.themasVanVandaagLong
-
-group by themasVanVandaag
-order by count(*) desc
-```
-
-```sql locatie
-select loc.locatie,
-  		loc.long,
-  		loc.lat,
-  		sum(e.todoCount) as sumTodoCount, 
-  		count(*) as dagenOpLocatie
-
-  from needful_things.entry e
-  left join needful_things.locatieData loc on e.ikWerkteOpDezeLocatie = loc.locatie
-group by loc.locatie,
-  		loc.long,
-  		loc.lat
-
+```sql updateDate
+select max(updateDate) as maxUpdateDate
+from needful_things.metaData
 ```

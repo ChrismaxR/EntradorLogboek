@@ -4,8 +4,8 @@ title:
 
 <BubbleMap 
     data={locatie} 
-    lat=long 
-    long=lat
+    lat=lat
+    long=long
     size=dagenOpLocatie 
     value=dagenOpLocatie 
     pointName=locatie 
