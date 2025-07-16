@@ -44,7 +44,8 @@ dbExecute(
     titel  TEXT,
     type TEXT,
     volgorde TEXT,
-    omschrijving TEXT
+    omschrijving TEXT,
+    stakehodlers TEXT
   )"
 )
 
@@ -102,4 +103,4 @@ dbExecute(
 )
 
 # Remove tables
-# duckdb::dbRemoveTable(con, "meta_data")
+# duckdb::dbRemoveTable(con, "todo")

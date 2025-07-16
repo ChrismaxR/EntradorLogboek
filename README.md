@@ -3,7 +3,7 @@
 Projectstatus: 🟡 In ontwikkeling  
 Auteur: Christian van Gaalen  
 Startdatum: April 2025
----
+---- 
 
 ## Overzicht
 

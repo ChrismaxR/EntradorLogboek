@@ -2,6 +2,16 @@
 title: 
 ---
 
+<BarChart 
+  data={themas}
+  x=name
+  y=num
+  outline=7
+  swapXY=true
+  
+/>
+
+
 <CalendarHeatmap 
     data={entry}
     date=datum
@@ -96,7 +106,7 @@ order by count(*) desc
 
 ```sql themas
 select themasVanVandaag as name, 
-  count(*) as value
+  count(*) as num
   
   from needful_things.themasVanVandaagLong
 

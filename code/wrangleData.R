@@ -21,7 +21,9 @@ todo <- bind_rows(
       todoTitel = todoATitel,
       todoOmschrijving = todoAOmschrijving,
       todoDevOps = todoADevOps,
-      todoType = todoAType
+      todoType = todoAType, 
+      todoStakholders = todoAStakeholders
+
     ) |>
     mutate(todoVolgorde = "A"),
 
@@ -32,7 +34,8 @@ todo <- bind_rows(
       todoTitel = todoBTitel,
       todoOmschrijving = todoBOmschrijving,
       todoDevOps = todoBDevOps,
-      todoType = todoBType
+      todoType = todoBType, 
+      todoStakholders = todoBStakeholders
     ) |>
     mutate(todoVolgorde = "B"),
 
@@ -43,7 +46,8 @@ todo <- bind_rows(
       todoTitel = todoCTitel,
       todoOmschrijving = todoCOmschrijving,
       todoDevOps = todoCDevOps,
-      todoType = todoCType
+      todoType = todoCType, 
+      todoStakholders = todoCStakeholders
     ) |>
     mutate(todoVolgorde = "C"),
 
@@ -54,11 +58,13 @@ todo <- bind_rows(
       todoTitel = todoDTitel,
       todoOmschrijving = todoDOmschrijving,
       todoDevOps = todoDDevOps,
-      todoType = todoDType
+      todoType = todoDType, 
+      todoStakholders = todoDStakeholders
     ) |>
     mutate(todoVolgorde = "D")
 ) |>
   filter(!is.na(todoTitel)) |> # Verwijder lege todo-items
+  arrange(entryId, todoVolgorde) |> 
   transmute(
     todoId = row_number(), # Unieke ID per todo-item
     entryId,
@@ -66,7 +72,8 @@ todo <- bind_rows(
     titel = todoTitel,
     type = todoType,
     volgorde = todoVolgorde,
-    omschrijving = todoOmschrijving
+    omschrijving = todoOmschrijving,
+    stakeholders = todoStakholders
   )
 
 # Selectie van algemene dagkenmerken per logboekentry
