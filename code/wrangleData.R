@@ -21,9 +21,8 @@ todo <- bind_rows(
       todoTitel = todoATitel,
       todoOmschrijving = todoAOmschrijving,
       todoDevOps = todoADevOps,
-      todoType = todoAType, 
+      todoType = todoAType,
       todoStakholders = todoAStakeholders
-
     ) |>
     mutate(todoVolgorde = "A"),
 
@@ -34,7 +33,7 @@ todo <- bind_rows(
       todoTitel = todoBTitel,
       todoOmschrijving = todoBOmschrijving,
       todoDevOps = todoBDevOps,
-      todoType = todoBType, 
+      todoType = todoBType,
       todoStakholders = todoBStakeholders
     ) |>
     mutate(todoVolgorde = "B"),
@@ -46,7 +45,7 @@ todo <- bind_rows(
       todoTitel = todoCTitel,
       todoOmschrijving = todoCOmschrijving,
       todoDevOps = todoCDevOps,
-      todoType = todoCType, 
+      todoType = todoCType,
       todoStakholders = todoCStakeholders
     ) |>
     mutate(todoVolgorde = "C"),
@@ -58,13 +57,13 @@ todo <- bind_rows(
       todoTitel = todoDTitel,
       todoOmschrijving = todoDOmschrijving,
       todoDevOps = todoDDevOps,
-      todoType = todoDType, 
+      todoType = todoDType,
       todoStakholders = todoDStakeholders
     ) |>
     mutate(todoVolgorde = "D")
 ) |>
   filter(!is.na(todoTitel)) |> # Verwijder lege todo-items
-  arrange(entryId, todoVolgorde) |> 
+  arrange(entryId, todoVolgorde) |>
   transmute(
     todoId = row_number(), # Unieke ID per todo-item
     entryId,
@@ -77,14 +76,14 @@ todo <- bind_rows(
   )
 
 # Selectie van algemene dagkenmerken per logboekentry
-entry <- logboek_wrangle |> 
+entry <- logboek_wrangle |>
   mutate(
     welbevindenVandaagBucket = case_when(
-      welbevindenVandaag %in% c(1:6) ~ "laag", 
-      welbevindenVandaag %in% c(7, 8) ~ "normaal", 
+      welbevindenVandaag %in% c(1:6) ~ "laag",
+      welbevindenVandaag %in% c(7, 8) ~ "normaal",
       T ~ "hoog"
     )
-  ) |> 
+  ) |>
   select(
     entryId,
     datum,
@@ -92,56 +91,72 @@ entry <- logboek_wrangle |>
     welbevindenVandaag,
     welbevindenVandaagBucket,
     themasVanVandaag,
-    toolsVanDeDag, 
+    toolsVanDeDag,
     ikWerkteOpDezeLocatie
-  ) |> 
+  ) |>
   left_join(
-    y = todo |> 
-      group_by(entryId) |> 
+    y = todo |>
+      group_by(entryId) |>
       summarise(
         todoCount = n()
-      ), by = "entryId" 
+      ),
+    by = "entryId"
   )
 
 ## themas splitten en long
-themasVanVandaagLong <- entry |> 
-  select(1, 2, themasVanVandaag) |> 
+themasVanVandaagLong <- entry |>
+  select(1, 2, themasVanVandaag) |>
   mutate(
     themasVanVandaag = str_split(string = themasVanVandaag, pattern = ", ")
-  ) |> 
+  ) |>
   unnest_longer(themasVanVandaag)
 
 ## tools splitten en long
-toolsVanDeDagLong <- entry |> 
-  select(1, 2, toolsVanDeDag) |> 
+toolsVanDeDagLong <- entry |>
+  select(1, 2, toolsVanDeDag) |>
   mutate(
     toolsVanDeDag = str_split(string = toolsVanDeDag, pattern = ", ")
-  ) |> 
+  ) |>
   unnest_longer(toolsVanDeDag)
+
+## todo types splitten en long
+todoTypesLong <- todo |>
+  select(1, type) |>
+  mutate(
+    type = str_split(string = type, pattern = ", ")
+  ) |>
+  unnest_longer(type)
+
+## stakeholders splitten en long
+todoStakeholdersLong <- todo |>
+  select(1, stakeholders) |>
+  na.omit() |>
+  mutate(
+    stakeholders = str_split(string = stakeholders, pattern = ", ")
+  ) |>
+  unnest_longer(stakeholders)
 
 # DevOpsId tracker - doorlooptijden van DevOps PBI's meten
 
-devOpsTracker <- logboek_wrangle |> 
-  select(datum, contains("DevOps")) |> 
-  pivot_longer(cols = 2:5) |> 
-  na.omit() |> 
-  arrange(value, datum) |> 
-  select(-name) |> 
-  rename(devOpsId = value) |> 
-  group_by(devOpsId) |> 
+devOpsTracker <- logboek_wrangle |>
+  select(datum, contains("DevOps")) |>
+  pivot_longer(cols = 2:5) |>
+  na.omit() |>
+  arrange(value, datum) |>
+  select(-name) |>
+  rename(devOpsId = value) |>
+  group_by(devOpsId) |>
   mutate(
     minmax = case_when(
-      datum == max(datum) ~ "maxDatum", 
-      datum == min(datum) ~ "minDatum", 
+      datum == max(datum) ~ "maxDatum",
+      datum == min(datum) ~ "minDatum",
       T ~ NA_character_
     )
-  ) |> 
-  add_tally(name = "aantalDagenGelogd") |> 
-  ungroup() |> 
-  na.omit() |> 
-  pivot_wider(names_from = minmax, values_from = datum) |> 
+  ) |>
+  add_tally(name = "aantalDagenGelogd") |>
+  ungroup() |>
+  na.omit() |>
+  pivot_wider(names_from = minmax, values_from = datum) |>
   mutate(
     duratie = maxDatum - minDatum
   )
-
-
